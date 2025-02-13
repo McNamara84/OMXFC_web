@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ArbeitsgruppenController;
 use App\Http\Controllers\EhrenmitgliederController;
+use App\Http\Controllers\ArbeitsgruppenController;
 
 Route::get('/', function () {
     return view('welcome');

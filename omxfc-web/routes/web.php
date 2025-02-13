@@ -2,10 +2,15 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ArbeitsgruppenController;
+use App\Http\Controllers\EhrenmitgliederController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
+
+Route::get('/arbeitsgruppen', [ArbeitsgruppenController::class, 'index'])->name('arbeitsgruppen');
+Route::get('/ehrenmitglieder', [EhrenmitgliederController::class, 'index'])->name('ehrenmitglieder');
 
 Route::get('/impressum', function () {
     return view('impressum');

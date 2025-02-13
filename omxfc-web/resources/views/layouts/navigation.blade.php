@@ -76,7 +76,7 @@
                     </x-nav-link>
                     @if (Route::has('register'))
                         <x-nav-link :href="route('register')" :active="request()->routeIs('register')">
-                            {{ __('Register') }}
+                            {{ __('Mitglied werden') }}
                         </x-nav-link>
                     @endif
                 </div>

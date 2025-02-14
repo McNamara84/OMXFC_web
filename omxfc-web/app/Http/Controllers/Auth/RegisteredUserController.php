@@ -30,21 +30,39 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'vorname' => ['required', 'string', 'max:255'],
+            'nachname' => ['required', 'string', 'max:255'],
+            'strasse' => ['required', 'string', 'max:255'],
+            'hausnummer' => ['required', 'string', 'max:255'],
+            'postleitzahl' => ['required', 'string', 'max:255'],
+            'stadt' => ['required', 'string', 'max:255'],
+            'land' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'agb_akzeptiert' => ['required', 'accepted'], // Checkbox muss akzeptiert sein
+            'mitgliedsbeitrag' => ['required', 'numeric', 'min:12', 'max:100'],
         ]);
 
         $user = User::create([
-            'name' => $request->name,
+            'name' => $request->vorname . $request->nachname,
+            'vorname' => $request->vorname,
+            'nachname' => $request->nachname,
+            'strasse' => $request->strasse,
+            'hausnummer' => $request->hausnummer,
+            'postleitzahl' => $request->postleitzahl,
+            'stadt' => $request->stadt,
+            'land' => $request->land,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'rolle' => 'anwaerter',
+            'agb_akzeptiert' => true,
+            'mitgliedsbeitrag' => $request->mitgliedsbeitrag,
         ]);
 
         event(new Registered($user));
 
-        Auth::login($user);
+        //Auth::login($user); // Login deaktivieren
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect('/')->with('success', 'Dein Antrag wurde erfolgreich versendet. Du erhältst eine E-Mail, sobald dein Account freigeschaltet wurde.');
     }
 }

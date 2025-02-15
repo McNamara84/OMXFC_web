@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Mail; // Mail Facade importieren
+use App\Mail\NewMembershipApplication; // Die Mailable-Klasse importieren
+use App\Mail\MembershipApplicationReceived;
 
 class RegisteredUserController extends Controller
 {
@@ -37,14 +40,17 @@ class RegisteredUserController extends Controller
             'postleitzahl' => ['required', 'string', 'max:255'],
             'stadt' => ['required', 'string', 'max:255'],
             'land' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'agb_akzeptiert' => ['required', 'accepted'], // Checkbox muss akzeptiert sein
             'mitgliedsbeitrag' => ['required', 'numeric', 'min:12', 'max:100'],
         ]);
 
+        // Stelle sicher, dass ein Wert für mitgliedsbeitrag vorhanden ist.
+        $mitgliedsbeitrag = $request->mitgliedsbeitrag ?? 12.00; // Fallback auf 12, falls kein Wert vorhanden
+
         $user = User::create([
-            'name' => $request->vorname . $request->nachname,
+            'name' => $request->vorname . $request->nachname, // Vorname und Nachname zusammensetzen
             'vorname' => $request->vorname,
             'nachname' => $request->nachname,
             'strasse' => $request->strasse,
@@ -54,12 +60,18 @@ class RegisteredUserController extends Controller
             'land' => $request->land,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'rolle' => 'anwaerter',
-            'agb_akzeptiert' => true,
-            'mitgliedsbeitrag' => $request->mitgliedsbeitrag,
+            'rolle' => 'anwaerter', // Rolle auf "Anwärter" setzen
+            'agb_akzeptiert' => true, // AGB als akzeptiert speichern
+            'mitgliedsbeitrag' => $mitgliedsbeitrag,
         ]);
 
         event(new Registered($user));
+
+        // E-Mail an den Vorstand senden
+        Mail::to('info@maddraxikon.com')->send(new NewMembershipApplication($request->all()));
+
+        // E-Mail an den Antragsteller senden
+        Mail::to($request->email)->send(new MembershipApplicationReceived($request->vorname . ' ' . $request->nachname));
 
         //Auth::login($user); // Login deaktivieren
 

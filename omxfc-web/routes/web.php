@@ -16,9 +16,12 @@ Route::get('/impressum', function () {
     return view('impressum');
 })->name('impressum');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'role:mitglied'])->group(function () {
+    // Hier alle Routen, die nur Mitglieder sehen dürfen
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

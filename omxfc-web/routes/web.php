@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EhrenmitgliederController;
 use App\Http\Controllers\ArbeitsgruppenController;
 use App\Http\Controllers\ImprintController;
+use App\Http\Controllers\StatutesController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -12,7 +13,7 @@ Route::get('/', function () {
 
 Route::get('/arbeitsgruppen', [ArbeitsgruppenController::class, 'index'])->name('arbeitsgruppen');
 Route::get('/ehrenmitglieder', [EhrenmitgliederController::class, 'index'])->name('ehrenmitglieder');
-
+Route::get('/satzung', [StatutesController::class, 'index'])->name('satzung');
 Route::get('/impressum', [ImprintController::class, 'index'])->name('impressum');
 
 Route::middleware(['auth', 'role:mitglied'])->group(function () {

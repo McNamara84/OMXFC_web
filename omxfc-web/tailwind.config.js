@@ -11,6 +11,10 @@ export default {
     darkMode: 'class',
     theme: {
         extend: {
+            spacing: {
+                '20': '5rem',
+                '24': '6rem',
+            },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },

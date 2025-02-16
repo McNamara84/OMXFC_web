@@ -85,7 +85,7 @@
         <!-- Mitgliedsbeitrag -->
         <div class="mt-4">
             <x-input-label for="mitgliedsbeitrag" :value="__('Jährlicher Mitgliedsbeitrag (ab 12,00 €)')" />
-            <input type="range" id="mitgliedsbeitrag" name="mitgliedsbeitrag" min="12" max="100" step="1" value="12"
+            <input type="range" id="mitgliedsbeitrag" name="mitgliedsbeitrag" min="12" max="120" step="1" value="12"
                    class="block mt-1 w-full"
                    oninput="updateBeitragValue(this.value)">
             <p id="beitragValue">12,00 €</p>

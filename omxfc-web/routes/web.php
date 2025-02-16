@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\EhrenmitgliederController;
 use App\Http\Controllers\ArbeitsgruppenController;
+use App\Http\Controllers\ImprintController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -12,9 +13,7 @@ Route::get('/', function () {
 Route::get('/arbeitsgruppen', [ArbeitsgruppenController::class, 'index'])->name('arbeitsgruppen');
 Route::get('/ehrenmitglieder', [EhrenmitgliederController::class, 'index'])->name('ehrenmitglieder');
 
-Route::get('/impressum', function () {
-    return view('impressum');
-})->name('impressum');
+Route::get('/impressum', [ImprintController::class, 'index'])->name('impressum');
 
 Route::middleware(['auth', 'role:mitglied'])->group(function () {
     // Hier alle Routen, die nur Mitglieder sehen dürfen

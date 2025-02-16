@@ -2,7 +2,8 @@
     $imagePaths = [
         asset('images/gallery/image1.jpg'),
         asset('images/gallery/image2.jpg'),
-        asset('images/gallery/image3.jpg')
+        asset('images/gallery/image3.jpg'),
+        asset('images/gallery/image4.jpg')
     ];
 @endphp
 

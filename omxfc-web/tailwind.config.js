@@ -18,6 +18,9 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                'omxfc-red': '#FF2D20', // Beispiel für eine benutzerdefinierte Farbe
+            },
         },
     },
 

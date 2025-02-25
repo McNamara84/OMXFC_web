@@ -31,6 +31,8 @@ class User extends Authenticatable
         'rolle',
         'agb_akzeptiert',
         'mitgliedsbeitrag',
+        'belohnungspunkte',
+        'naechster_zahltag',
     ];
 
     /**
@@ -53,6 +55,11 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'naechster_zahltag' => 'date',
         ];
+    }
+    public function todoListen(): HasMany
+    {
+        return $this->hasMany(TodoListe::class, 'zugewiesen_an');
     }
 }

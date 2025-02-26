@@ -4,34 +4,28 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Facades\Session;
+use Symfony\Component\HttpFoundation\Response; // Diese Zeile ändern
 
 class CheckRole
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
-    public function handle(Request $request, Closure $next, string $role): Response
+    protected $roleHierarchy = [
+        'vorstand' => ['vorstand', 'mitglied', 'anwaerter'],
+        'mitglied' => ['mitglied'],
+        'anwaerter' => []
+    ];
+
+    public function handle(Request $request, Closure $next, string $role): Response // Diese Zeile ändern
     {
-        if (!Auth::check()) {
-            return redirect('login');
+        if (!$request->user()) {
+            abort(403, 'Nicht authentifiziert.');
         }
 
-        $user = Auth::user();
+        $userRole = $request->user()->rolle;
 
-        if ($user->rolle == $role) {
-            // Benutzer hat die angeforderte Rolle
-            return $next($request);
+        if (!isset($this->roleHierarchy[$userRole]) || !in_array($role, $this->roleHierarchy[$userRole])) {
+            abort(403, 'Keine Berechtigung für diese Aktion.');
         }
 
-        // Benutzer hat nicht die angeforderte Rolle
-        Auth::logout(); // Logout the user
-
-        Session::flash('error', 'Dein Mitgliedsantrag wird aktuell noch geprüft. Wir melden uns in Kürze bei dir.'); // Use Session::flash
-        return redirect('login');
+        return $next($request);
     }
 }

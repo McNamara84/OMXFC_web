@@ -6,6 +6,7 @@ use App\Http\Controllers\EhrenmitgliederController;
 use App\Http\Controllers\ArbeitsgruppenController;
 use App\Http\Controllers\ImprintController;
 use App\Http\Controllers\StatutesController;
+use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -18,15 +19,20 @@ Route::get('/impressum', [ImprintController::class, 'index'])->name('impressum')
 
 Route::middleware(['auth', 'role:mitglied'])->group(function () {
     // Hier alle Routen, die nur Mitglieder sehen dürfen
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    //Route für Vorstandsmitglieder
+    Route::middleware(['role:vorstand'])->group(function () {
+        Route::get('/dashboard/vorstand', [DashboardController::class, 'vorstandDashboard'])->name('dashboard.vorstand');
+        Route::post('/anwaerter/{id}/annehmen', [DashboardController::class, 'annehmen'])->name('anwaerter.annehmen');
+        Route::post('/anwaerter/{id}/ablehnen', [DashboardController::class, 'ablehnen'])->name('anwaerter.ablehnen');
+    });
 });
 
 require __DIR__ . '/auth.php';

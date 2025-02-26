@@ -45,7 +45,7 @@ jobs:
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --working-dir=omxfc-web/composer.json
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --working-dir=../omxfc-web/composer.json
     
     - name: Setup Node.js
       uses: actions/setup-node@v3

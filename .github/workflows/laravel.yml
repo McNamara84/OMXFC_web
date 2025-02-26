@@ -20,6 +20,10 @@ jobs:
           - 3306:3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
+    defaults:
+      run:
+        working-directory: ./omxfc-web
+
     steps:
     - uses: actions/checkout@v4
     
@@ -45,13 +49,14 @@ jobs:
       run: php -r "file_exists('.env') || copy('.env.example', '.env');"
     
     - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist --working-dir=../omxfc-web/composer.json
+      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
     
     - name: Setup Node.js
       uses: actions/setup-node@v3
       with:
         node-version: '18'
         cache: 'npm'
+        cache-dependency-path: './omxfc-web/package-lock.json'
     
     - name: Install NPM dependencies
       run: npm ci

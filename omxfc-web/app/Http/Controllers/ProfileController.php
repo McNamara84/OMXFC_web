@@ -32,6 +32,13 @@ class ProfileController extends Controller
             $request->user()->email_verified_at = null;
         }
 
+        $request->user()->einstiegsroman = $request->einstiegsroman;
+        $request->user()->lieblingsroman = $request->lieblingsroman;
+        $request->user()->lieblingszyklus = $request->lieblingszyklus;
+        $request->user()->lieblingscharakter = $request->lieblingscharakter;
+        $request->user()->lesestand = $request->lesestand;
+        $request->user()->leseform = $request->leseform;
+
         $request->user()->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');

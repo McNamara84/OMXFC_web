@@ -33,6 +33,12 @@ class User extends Authenticatable
         'mitgliedsbeitrag',
         'belohnungspunkte',
         'naechster_zahltag',
+        'einstiegsroman',
+        'lieblingsroman',
+        'lieblingszyklus',
+        'lieblingscharakter',
+        'lesestand',
+        'leseform',
     ];
 
     /**

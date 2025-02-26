@@ -30,7 +30,7 @@
                         @auth
                             <!-- Zusätzliche Links für eingeloggte Benutzer -->
                             <x-nav-link :href="route('profile.edit')" :active="request()->routeIs('profile.edit')">
-                                {{ __('Profile') }}
+                                {{ __('Profil') }}
                             </x-nav-link>
                         @endauth
                     </div>
@@ -58,7 +58,7 @@
 
                             <x-slot name="content">
                                 <x-dropdown-link :href="route('profile.edit')">
-                                    {{ __('Profile') }}
+                                    {{ __('Profil') }}
                                 </x-dropdown-link>
 
                                 <!-- Authentication -->
@@ -67,7 +67,7 @@
 
                                     <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
                                                         this.closest('form').submit();">
-                                        {{ __('Log Out') }}
+                                        {{ __('Abmelden') }}
                                     </x-dropdown-link>
                                 </form>
                             </x-slot>

@@ -25,6 +25,12 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            'einstiegsroman' => ['nullable', 'string', 'max:255'],
+            'lieblingsroman' => ['nullable', 'string', 'max:255'],
+            'lieblingszyklus' => ['nullable', 'string', 'max:255'],
+            'lieblingscharakter' => ['nullable', 'string', 'max:255'],
+            'lesestand' => ['nullable', 'string', 'max:255'],
+            'leseform' => ['nullable', 'in:eBook,Papier'],
         ];
     }
 }
